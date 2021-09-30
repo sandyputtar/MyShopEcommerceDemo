@@ -175,6 +175,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ProductManagementController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -338,6 +339,10 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\ProductManagement\Index.cshtml" />
+    <Content Include="Views\ProductManagement\create.cshtml" />
+    <Content Include="Views\ProductManagement\Edit.cshtml" />
+    <Content Include="Views\ProductManagement\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -352,6 +357,27 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyShopEcommerceDemo.core\MyShopEcommerceDemo.core.csproj">
+      <Project>{52c70441-e54c-4ebf-a726-59bd272fc64a}</Project>
+      <Name>MyShopEcommerceDemo.core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MyShopEcommerceDemo.DataAccess.SQL\MyShopEcommerceDemo.DataAccess.SQL.csproj">
+      <Project>{759abe87-37a1-4c7d-9c3e-5da512e307e8}</Project>
+      <Name>MyShopEcommerceDemo.DataAccess.SQL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MyShopEcommerceDemo.Inmemory\MyShopEcommerceDemo.DataAccess.Inmemory.csproj">
+      <Project>{56a103cf-f0a5-4671-8bf4-9d26271db60a}</Project>
+      <Name>MyShopEcommerceDemo.DataAccess.Inmemory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MyShopEcommerceDemo.Services\MyShopEcommerceDemo.Services.csproj">
+      <Project>{0aeb8ab0-da93-4b74-811b-a5df933fe0fe}</Project>
+      <Name>MyShopEcommerceDemo.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
