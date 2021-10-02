@@ -5,37 +5,31 @@ using System.Web;
 using System.Web.Mvc;
 using MyShopEcommerceDemo.core.Models;
 using MyShopEcommerceDemo.DataAccess.Inmemory;
-using MyShopEcommerceDemo.core.ViewModel;
 
 namespace MyShopEcommerceDemo.UI.Controllers
 {
-    
-    public class ProductManagementController : Controller
+    public class ProductCategoryManagementController : Controller
     {
-        ProductRepository context;
-        ProductCategoryRepository m;
-        public ProductManagementController()
+        ProductCategoryRepository context;
+        public ProductCategoryManagementController()
         {
-            context = new ProductRepository();
-            m = new ProductCategoryRepository();
+            context = new ProductCategoryRepository();
         }
         
         // GET: ProductManagement
         public ActionResult Index()
         {
-            List<Product> products = context.Collection().ToList();
+            List<ProductCategory> products = context.Collection().ToList();
             return View(products);
         }
 
         public ActionResult create()
         {
-            ProductManagerViewModel g = new ProductManagerViewModel();
-            g.Product = new Product();
-            g.ProductCategories = m.Collection();
-            return View(g);
+            ProductCategory p = new ProductCategory();
+            return View(p);
         }
         [HttpPost]
-        public ActionResult create(Product p)
+        public ActionResult create(ProductCategory p)
         {
             if(!ModelState.IsValid)
             {
@@ -51,23 +45,20 @@ namespace MyShopEcommerceDemo.UI.Controllers
 
         public ActionResult Edit(string id)
         {
-            Product p = context.find(id);
+            ProductCategory p = context.find(id);
             if(p==null)
             {
                 return HttpNotFound();
             }
             else
             {
-                ProductManagerViewModel s = new ProductManagerViewModel();
-                s.Product = p;
-                s.ProductCategories = m.Collection();
-                return View(s);
+                return View(p);
             }
         }
         [HttpPost]
-        public ActionResult Edit(Product p,string id)
+        public ActionResult Edit(ProductCategory p,string id)
         {
-            Product pe = context.find(id);
+            ProductCategory pe = context.find(id);
             if(!ModelState.IsValid)
             {
                 return View(p);
@@ -75,10 +66,6 @@ namespace MyShopEcommerceDemo.UI.Controllers
             else
             {
                 pe.category = p.category;
-                pe.description = p.description;
-                pe.name = p.name;
-                pe.price = p.price;
-                pe.image = p.image;
 
                 context.commit();
                 return RedirectToAction("Index");
@@ -87,7 +74,7 @@ namespace MyShopEcommerceDemo.UI.Controllers
 
         public ActionResult Delete(string id)
         {
-            Product p = context.find(id);
+            ProductCategory p = context.find(id);
             if (p == null)
             {
                 return HttpNotFound();
@@ -101,7 +88,7 @@ namespace MyShopEcommerceDemo.UI.Controllers
         [ActionName("Delete")]
         public ActionResult ConfirmDelete(string id)
         {
-            Product p = context.find(id);
+            ProductCategory p = context.find(id);
             if (p == null)
             {
                 return HttpNotFound();
@@ -112,7 +99,9 @@ namespace MyShopEcommerceDemo.UI.Controllers
                 context.commit();
                 return RedirectToAction("Index");
             }
-        }
+        } 
+        
+   
 
     }
 }

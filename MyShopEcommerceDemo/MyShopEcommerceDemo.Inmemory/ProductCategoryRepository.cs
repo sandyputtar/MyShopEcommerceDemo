@@ -5,20 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Caching;
 using MyShopEcommerceDemo.core.Models;
-using MyShopEcommerceDemo.core.ViewModel;
 
 namespace MyShopEcommerceDemo.DataAccess.Inmemory
 {
-   public class ProductRepository
+    public class ProductCategoryRepository
     {
         ObjectCache cache = MemoryCache.Default;
-        List<Product> products;
-        public ProductRepository()
+        List<ProductCategory> products;
+        public ProductCategoryRepository()
         {
-            products = cache["products"] as List<Product>;
+            products = cache["products"] as List<ProductCategory>;
             if (products == null)
             {
-                products = new List<Product>();
+                products = new List<ProductCategory>();
             }
 
         }
@@ -28,14 +27,14 @@ namespace MyShopEcommerceDemo.DataAccess.Inmemory
             cache["products"] = products;
         }
 
-        public void insert(Product p)
+        public void insert(ProductCategory p)
         {
             products.Add(p);
         }
 
-        public void update(Product product)
+        public void update(ProductCategory product)
         {
-            Product c = products.Find(p => p.id == product.id);
+            ProductCategory c = products.Find(p => p.id == product.id);
             if (c != null)
             {
                 c = product;
@@ -47,9 +46,9 @@ namespace MyShopEcommerceDemo.DataAccess.Inmemory
 
         }
 
-        public Product find(string id)
+        public ProductCategory find(string id)
         {
-            Product c = products.Find(p => p.id == id);
+            ProductCategory c = products.Find(p => p.id == id);
             if (c != null)
             {
                 return c;
@@ -60,14 +59,14 @@ namespace MyShopEcommerceDemo.DataAccess.Inmemory
             }
         }
 
-        public IQueryable<Product> Collection()
-         {
+        public IQueryable<ProductCategory> Collection()
+        {
             return products.AsQueryable();
-         }
+        }
 
         public void delete(string id)
         {
-            Product c = products.Find(p => p.id == id);
+            ProductCategory c = products.Find(p => p.id == id);
             if (c != null)
             {
                 products.Remove(c);
