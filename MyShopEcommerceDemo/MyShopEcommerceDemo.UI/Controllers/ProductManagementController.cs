@@ -12,107 +12,122 @@ namespace MyShopEcommerceDemo.UI.Controllers
     
     public class ProductManagementController : Controller
     {
-        ProductRepository context;
-        ProductCategoryRepository m;
+        InMemoryRepository<Product> context;
+        InMemoryRepository<ProductCategory> productCategories;
+
         public ProductManagementController()
         {
-            context = new ProductRepository();
-            m = new ProductCategoryRepository();
+            context = new InMemoryRepository<Product>();
+            productCategories = new InMemoryRepository<ProductCategory>();
         }
-        
-        // GET: ProductManagement
+        // GET: ProductManager
         public ActionResult Index()
         {
             List<Product> products = context.Collection().ToList();
             return View(products);
         }
 
-        public ActionResult create()
+        public ActionResult Create()
         {
-            ProductManagerViewModel g = new ProductManagerViewModel();
-            g.Product = new Product();
-            g.ProductCategories = m.Collection();
-            return View(g);
+            ProductManagerViewModel viewModel = new ProductManagerViewModel();
+
+            viewModel.Product = new Product();
+            viewModel.ProductCategories = productCategories.Collection();
+            return View(viewModel);
         }
+
         [HttpPost]
-        public ActionResult create(Product p)
+        public ActionResult Create(Product product)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return View(p);
+                return View(product);
             }
             else
             {
-                context.insert(p);
-                context.commit();
+                context.Insert(product);
+                context.Commit();
+
                 return RedirectToAction("Index");
             }
+
         }
 
-        public ActionResult Edit(string id)
+        public ActionResult Edit(string Id)
         {
-            Product p = context.find(id);
-            if(p==null)
+            Product product = context.Find(Id);
+            if (product == null)
             {
                 return HttpNotFound();
             }
             else
             {
-                ProductManagerViewModel s = new ProductManagerViewModel();
-                s.Product = p;
-                s.ProductCategories = m.Collection();
-                return View(s);
+                ProductManagerViewModel viewModel = new ProductManagerViewModel();
+                viewModel.Product = product;
+                viewModel.ProductCategories = productCategories.Collection();
+
+                return View(viewModel);
             }
         }
+
         [HttpPost]
-        public ActionResult Edit(Product p,string id)
+        public ActionResult Edit(Product product, string Id)
         {
-            Product pe = context.find(id);
-            if(!ModelState.IsValid)
-            {
-                return View(p);
-            }
-            else
-            {
-                pe.category = p.category;
-                pe.description = p.description;
-                pe.name = p.name;
-                pe.price = p.price;
-                pe.image = p.image;
+            Product productToEdit = context.Find(Id);
 
-                context.commit();
-                return RedirectToAction("Index");
-            }
-        }
-
-        public ActionResult Delete(string id)
-        {
-            Product p = context.find(id);
-            if (p == null)
+            if (productToEdit == null)
             {
                 return HttpNotFound();
             }
             else
             {
-                return View(p);
+                if (!ModelState.IsValid)
+                {
+                    return View(product);
+                }
+
+                productToEdit.category = product.category;
+                productToEdit.description = product.description;
+                productToEdit.image = product.image;
+                productToEdit.name = product.name;
+                productToEdit.price = product.price;
+
+                context.Commit();
+
+                return RedirectToAction("Index");
             }
         }
+
+        public ActionResult Delete(string Id)
+        {
+            Product productToDelete = context.Find(Id);
+
+            if (productToDelete == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+                return View(productToDelete);
+            }
+        }
+
         [HttpPost]
         [ActionName("Delete")]
-        public ActionResult ConfirmDelete(string id)
+        public ActionResult ConfirmDelete(string Id)
         {
-            Product p = context.find(id);
-            if (p == null)
+            Product productToDelete = context.Find(Id);
+
+            if (productToDelete == null)
             {
                 return HttpNotFound();
             }
             else
             {
-                context.delete(id);
-                context.commit();
+                context.Delete(Id);
+                context.Commit();
                 return RedirectToAction("Index");
             }
         }
-
     }
 }

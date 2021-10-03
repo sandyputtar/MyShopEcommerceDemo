@@ -10,10 +10,10 @@ namespace MyShopEcommerceDemo.UI.Controllers
 {
     public class ProductCategoryManagementController : Controller
     {
-        ProductCategoryRepository context;
+        InMemoryRepository<ProductCategory> context;
         public ProductCategoryManagementController()
         {
-            context = new ProductCategoryRepository();
+            context = new InMemoryRepository<ProductCategory>();
         }
         
         // GET: ProductManagement
@@ -37,15 +37,15 @@ namespace MyShopEcommerceDemo.UI.Controllers
             }
             else
             {
-                context.insert(p);
-                context.commit();
+                context.Insert(p);
+                context.Commit();
                 return RedirectToAction("Index");
             }
         }
 
         public ActionResult Edit(string id)
         {
-            ProductCategory p = context.find(id);
+            ProductCategory p = context.Find(id);
             if(p==null)
             {
                 return HttpNotFound();
@@ -58,7 +58,7 @@ namespace MyShopEcommerceDemo.UI.Controllers
         [HttpPost]
         public ActionResult Edit(ProductCategory p,string id)
         {
-            ProductCategory pe = context.find(id);
+            ProductCategory pe = context.Find(id);
             if(!ModelState.IsValid)
             {
                 return View(p);
@@ -67,14 +67,14 @@ namespace MyShopEcommerceDemo.UI.Controllers
             {
                 pe.category = p.category;
 
-                context.commit();
+                context.Commit();
                 return RedirectToAction("Index");
             }
         }
 
         public ActionResult Delete(string id)
         {
-            ProductCategory p = context.find(id);
+            ProductCategory p = context.Find(id);
             if (p == null)
             {
                 return HttpNotFound();
@@ -88,15 +88,15 @@ namespace MyShopEcommerceDemo.UI.Controllers
         [ActionName("Delete")]
         public ActionResult ConfirmDelete(string id)
         {
-            ProductCategory p = context.find(id);
+            ProductCategory p = context.Find(id);
             if (p == null)
             {
                 return HttpNotFound();
             }
             else
             {
-                context.delete(id);
-                context.commit();
+                context.Delete(id);
+                context.Commit();
                 return RedirectToAction("Index");
             }
         } 
