@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MyShopEcommerceDemo.core.Contracts;
 using MyShopEcommerceDemo.core.Models;
 using MyShopEcommerceDemo.DataAccess.Inmemory;
 
@@ -10,10 +11,10 @@ namespace MyShopEcommerceDemo.UI.Controllers
 {
     public class ProductCategoryManagementController : Controller
     {
-        InMemoryRepository<ProductCategory> context;
-        public ProductCategoryManagementController()
+        IRepository<ProductCategory> context;
+        public ProductCategoryManagementController(IRepository<ProductCategory> context)
         {
-            context = new InMemoryRepository<ProductCategory>();
+            this.context = context;
         }
         
         // GET: ProductManagement
