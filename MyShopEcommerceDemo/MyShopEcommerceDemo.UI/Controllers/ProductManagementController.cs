@@ -7,6 +7,7 @@ using MyShopEcommerceDemo.core.Models;
 using MyShopEcommerceDemo.DataAccess.Inmemory;
 using MyShopEcommerceDemo.core.ViewModel;
 using MyShopEcommerceDemo.core.Contracts;
+using System.IO;
 
 namespace MyShopEcommerceDemo.UI.Controllers
 {
@@ -38,7 +39,7 @@ namespace MyShopEcommerceDemo.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Product product)
+        public ActionResult Create(Product product,HttpPostedFileBase file)
         {
             if (!ModelState.IsValid)
             {
@@ -46,6 +47,11 @@ namespace MyShopEcommerceDemo.UI.Controllers
             }
             else
             {
+                if(file != null)
+                {
+                    product.image = product.Id + Path.GetExtension(file.FileName);
+                    file.SaveAs(Server.MapPath("//Content//ProductImages//")+product.image);
+                }
                 context.Insert(product);
                 context.Commit();
 
@@ -72,7 +78,7 @@ namespace MyShopEcommerceDemo.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(Product product, string Id)
+        public ActionResult Edit(Product product, string Id,HttpPostedFileBase file)
         {
             Product productToEdit = context.Find(Id);
 
@@ -86,10 +92,14 @@ namespace MyShopEcommerceDemo.UI.Controllers
                 {
                     return View(product);
                 }
+                if (file != null)
+                {
+                    productToEdit.image = productToEdit.Id + Path.GetExtension(file.FileName);
+                    file.SaveAs(Server.MapPath("//Content//ProductImages//") + productToEdit.image);
+                }
 
                 productToEdit.category = product.category;
                 productToEdit.description = product.description;
-                productToEdit.image = product.image;
                 productToEdit.name = product.name;
                 productToEdit.price = product.price;
 
